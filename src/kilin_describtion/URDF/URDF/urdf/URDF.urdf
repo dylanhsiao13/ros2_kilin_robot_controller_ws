@@ -1001,6 +1001,7 @@
   <!-- repeat for FR / RL / RR -->
 </ros2_control>
 
+<!-- Gazebo plugin for ROS2 Control -->
 <gazebo>
   <plugin name="gazebo_ros2_control"
           filename="libgazebo_ros2_control.so"/>
