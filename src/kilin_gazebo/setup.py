@@ -11,7 +11,7 @@ setup(
         ['resource/' + package_name]),
     ('share/' + package_name, ['package.xml']),
     ('share/' + package_name + '/launch',
-        ['launch/spawn_kilin.launch.py']),
+        ['launch/spawn_kilin.launch.py', 'launch/rviz_kilin.launch.py']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
