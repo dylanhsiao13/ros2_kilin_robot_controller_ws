@@ -13,7 +13,14 @@ class JointCommander(Node):
         self.time_start = time.time()
         
         # Get joint names from parameter
-        self.declare_parameter('joint_names', ['joint1', 'joint2', 'joint3'])
+        self.declare_parameter('joint_names',[
+        'FL_Joint0', 'FL_Joint1', 'FL_Joint2', 'FL_Joint3',
+        'FR_Joint0', 'FR_Joint1', 'FR_Joint2', 'FR_Joint3',
+        'RL_Joint0', 'RL_Joint1', 'RL_Joint2', 'RL_Joint3',
+        'RR_Joint0', 'RR_Joint1', 'RR_Joint2', 'RR_Joint3',
+            ]
+)
+
         self.joint_names = self.get_parameter('joint_names').value
         
         self.get_logger().info(f'Joint Commander initialized with joints: {self.joint_names}')
