@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'joint_commander=kilin_controller.joint_commander:main',
         ],
     },
 )
