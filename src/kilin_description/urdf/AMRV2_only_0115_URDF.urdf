@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="AMRV2_only_0115_URDF">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.018256 0.0018454 0.011795"
+        rpy="0 0 0" />
+      <mass
+        value="18.4057659 " />
+      <inertia
+        ixx="0.2903534"
+        ixy="0.0011118"
+        ixz="0.0062007"
+        iyy="0.6199319"
+        iyz="-0.0000185"
+        izz="0.8012885" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="FL_hip_link">
+    <inertial>
+      <origin
+        xyz="-6.7288E-05 0.011399 0.097884"
+        rpy="0 0 0" />
+      <mass
+        value="1.4192271" />
+      <inertia
+        ixx="0.0069868"
+        ixy="-0.0000037"
+        ixz="-0.0000051"
+        iyy="0.0026687"
+        iyz="0.0000690"
+        izz="0.0053806" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_hip_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.64706 0.61961 0.58824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_hip_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_hip"
+    type="revolute">
+    <origin
+      xyz="0.24547 0.13115 -0.024737"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="FL_hip_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="FL_steering_link">
+    <inertial>
+      <origin
+        xyz="-0.00042264 -0.0023919 0.012047"
+        rpy="0 0 0" />
+      <mass
+        value=" 0.1476068" />
+      <inertia
+        ixx="0.0000787"
+        ixy="0.0000001"
+        ixz="-0.0000001"
+        iyy="0.0000785"
+        iyz="-0.0000001"
+        izz="0.0000165" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_steering_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_steering_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_steering"
+    type="revolute">
+    <origin
+      xyz="0 0 0.118"
+      rpy="1.5708 0 0" />
+    <parent
+      link="FL_hip_link" />
+    <child
+      link="FL_steering_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="FL_suspension_link">
+    <inertial>
+      <origin
+        xyz="-6.3455E-06 -1.7816E-06 -0.15093"
+        rpy="0 0 0" />
+      <mass
+        value="0.2584073" />
+      <inertia
+        ixx="0.0008798"
+        ixy="0.0000000"
+        ixz="0.0000004"
+        iyy="0.0007955"
+        iyz="0.0000002"
+        izz="0.0001056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_suspension_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_suspension_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_suspension"
+    type="prismatic">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="FL_steering_link" />
+    <child
+      link="FL_suspension_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.0195"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="FL_wheel_link">
+    <inertial>
+      <origin
+        xyz="1.1102E-16 3.3307E-16 -3.3307E-16"
+        rpy="0 0 0" />
+      <mass
+        value="1.6066304" />
+      <inertia
+        ixx="0.0013527"
+        ixy="0.0000000"
+        ixz="0.0000000"
+        iyy="0.0013527"
+        iyz="0.0000000"
+        izz="0.0020388" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.10196 0.10196 0.10196 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FL_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_wheel"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.26"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="FL_suspension_link" />
+    <child
+      link="FL_wheel_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-30"
+      upper="30"
+      effort="5"
+      velocity="3" />
+  </joint>
+  <link
+    name="FR_hip_link">
+    <inertial>
+      <origin
+        xyz="6.7287500730373E-05 0.0113994809236642 -0.0978835803330958"
+        rpy="0 0 0" />
+      <mass
+        value="1.4192271" />
+      <inertia
+        ixx="0.0069868"
+        ixy="0.0000037"
+        ixz="-0.0000051"
+        iyy="0.0026687"
+        iyz="-0.0000690"
+        izz="0.0053806" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR_hip_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR_hip_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_hip"
+    type="revolute">
+    <origin
+      xyz="0.24547 -0.12885 -0.024737"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="FR_hip_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="FR__steering_link">
+    <inertial>
+      <origin
+        xyz="0.000422640037611832 0.00239185393046065 0.0120471187970914"
+        rpy="0 0 0" />
+      <mass
+        value=" 0.1476068" />
+      <inertia
+        ixx="0.0000787"
+        ixy="0.0000001"
+        ixz="0.0000001"
+        iyy="0.0000785"
+        iyz="0.0000001"
+        izz="0.0000165" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR__steering_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR__steering_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_steering"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.118"
+      rpy="1.5708 0 0" />
+    <parent
+      link="FR_hip_link" />
+    <child
+      link="FR__steering_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="FR_suspension_link">
+    <inertial>
+      <origin
+        xyz="6.34553769052193E-06 1.78159153912949E-06 -0.150928743812754"
+        rpy="0 0 0" />
+       <mass
+        value="0.2584073" />
+      <inertia
+        ixx="0.0008798"
+        ixy="0.0000000"
+        ixz="-0.0000004"
+        iyy="0.0007955"
+        iyz="-0.0000002"
+        izz="0.0001056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR_suspension_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR_suspension_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_suspension"
+    type="prismatic">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="FR__steering_link" />
+    <child
+      link="FR_suspension_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.0195"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="FR_wheel_link">
+    <inertial>
+      <origin
+        xyz="-2.22044604925031E-16 -2.77555756156289E-16 0"
+        rpy="0 0 0" />
+      <mass
+        value="1.6066304" />
+      <inertia
+        ixx="0.0013527"
+        ixy="0.0000000"
+        ixz="0.0000000"
+        iyy="0.0013527"
+        iyz="0.0000000"
+        izz="0.0020388" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.101960784313725 0.101960784313725 0.101960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/FR_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_wheel"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.26"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="FR_suspension_link" />
+    <child
+      link="FR_wheel_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-30"
+      upper="30"
+      effort="5"
+      velocity="3" />
+  </joint>
+  <link
+    name="RL_hip_link">
+    <inertial>
+      <origin
+        xyz="-6.72875007298873E-05 0.0113994809236646 0.0978835803330976"
+        rpy="0 0 0" />
+        <mass
+        value="1.4192271" />
+      <inertia
+        ixx="0.0069868"
+        ixy="-0.0000037"
+        ixz="-0.0000051"
+        iyy="0.0026687"
+        iyz="0.0000690"
+        izz="0.0053806" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_hip_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_hip_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RL_hip"
+    type="revolute">
+    <origin
+      xyz="-0.23453 0.13115 -0.024737"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="RL_hip_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="RL_steering_link">
+    <inertial>
+      <origin
+        xyz="-0.000422639994594715 -0.00239185388588709 0.0120471200048065"
+        rpy="0 0 0" />
+      <mass
+        value=" 0.1476068" />
+      <inertia
+        ixx="0.0000787"
+        ixy="0.0000001"
+        ixz="-0.0000001"
+        iyy="0.0000785"
+        iyz="-0.0000001"
+        izz="0.0000165" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_steering_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_steering_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RL_steering"
+    type="revolute">
+    <origin
+      xyz="0 0 0.118"
+      rpy="1.5708 0 0" />
+    <parent
+      link="RL_hip_link" />
+    <child
+      link="RL_steering_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="RL_suspension_link">
+    <inertial>
+      <origin
+        xyz="-6.34553768619206E-06 -1.78159153915725E-06 -0.150928743812755"
+        rpy="0 0 0" />
+       <mass
+        value="0.2584073" />
+      <inertia
+        ixx="0.0008798"
+        ixy="0.0000000"
+        ixz="0.0000004"
+        iyy="0.0007955"
+        iyz="0.0000002"
+        izz="0.0001056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_suspension_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.776470588235294 0.756862745098039 0.737254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_suspension_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RL_suspension"
+    type="prismatic">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="RL_steering_link" />
+    <child
+      link="RL_suspension_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.0195"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="RL_wheel_link">
+    <inertial>
+      <origin
+        xyz="2.4980018054066E-16 1.38777878078145E-17 2.77555756156289E-17"
+        rpy="0 0 0" />
+      <mass
+        value="1.6066304" />
+      <inertia
+        ixx="0.0013527"
+        ixy="0.0000000"
+        ixz="0.0000000"
+        iyy="0.0013527"
+        iyz="0.0000000"
+        izz="0.0020388" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.101960784313725 0.101960784313725 0.101960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RL_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RL_wheel"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.26"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="RL_suspension_link" />
+    <child
+      link="RL_wheel_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-30"
+      upper="30"
+      effort="5"
+      velocity="3" />
+  </joint>
+  <link
+    name="RR_hip_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+     <mass
+        value="1.4192271" />
+      <inertia
+        ixx="0.0069868"
+        ixy="0.0000037"
+        ixz="-0.0000051"
+        iyy="0.0026687"
+        iyz="-0.0000690"
+        izz="0.0053806" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_hip_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_hip_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RR_hip"
+    type="revolute">
+    <origin
+      xyz="-0.23453 -0.12885 -0.024737"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="RR_hip_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="RR_steering_link">
+    <inertial>
+      <origin
+        xyz="0.00042264000235348 0.00239185388945912 0.0120471196587657"
+        rpy="0 0 0" />
+       <mass
+        value=" 0.1476068" />
+      <inertia
+        ixx="0.0000787"
+        ixy="0.0000001"
+        ixz="0.0000001"
+        iyy="0.0000785"
+        iyz="0.0000001"
+        izz="0.0000165" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_steering_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_steering_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RR_steering"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.118"
+      rpy="1.5708 0 0" />
+    <parent
+      link="RR_hip_link" />
+    <child
+      link="RR_steering_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="3" />
+  </joint>
+  <link
+    name="RR_suspension_link">
+    <inertial>
+      <origin
+        xyz="6.34553768659452E-06 1.78159153935153E-06 -0.150928743812754"
+        rpy="0 0 0" />
+      <mass
+        value="0.2584073" />
+      <inertia
+        ixx="0.0008798"
+        ixy="0.0000000"
+        ixz="-0.0000004"
+        iyy="0.0007955"
+        iyz="-0.0000002"
+        izz="0.0001056" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_suspension_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.776470588235294 0.756862745098039 0.737254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_suspension_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RR_suspension"
+    type="prismatic">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="RR_steering_link" />
+    <child
+      link="RR_suspension_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.0195"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="RR_wheel_link">
+    <inertial>
+      <origin
+        xyz="1.80411241501588E-16 -3.19189119579733E-16 5.55111512312578E-17"
+        rpy="0 0 0" />
+     <mass
+        value="1.6066304" />
+      <inertia
+        ixx="0.0013527"
+        ixy="0.0000000"
+        ixz="0.0000000"
+        iyy="0.0013527"
+        iyz="0.0000000"
+        izz="0.0020388" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.101960784313725 0.101960784313725 0.101960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://AMRV2_only_0115_URDF/meshes/RR_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RR_wheel"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.26"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="RR_suspension_link" />
+    <child
+      link="RR_wheel_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-30"
+      upper="30"
+      effort="5"
+      velocity="3" />
+  </joint>
+</robot>

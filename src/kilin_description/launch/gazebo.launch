@@ -10,7 +10,7 @@
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-file $(find kilin_description)/urdf/kilin.urdf -urdf -model kilin"
+    args="-file $(find AMRV2_only_0115_URDF.SLDASM)/urdf/AMRV2_only_0115_URDF.SLDASM.urdf -urdf -model AMRV2_only_0115_URDF.SLDASM"
     output="screen" />
   <node
     name="fake_joint_calibration"
