@@ -14,15 +14,8 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='dhsiao',
-    maintainer_email='dhsiao@todo.todo',
-    description='TODO: Package description',
-    license='TODO: License declaration',
-    tests_require=['pytest'],
-    entry_points={
-        'console_scripts': [
-    
-        ],
-    },
+    maintainer='you',
+    maintainer_email='dylanhsiao13@gmail.com',
+    description='Bringup package for Kilin robot',
+    license='Apache-2.0',
 )
-
