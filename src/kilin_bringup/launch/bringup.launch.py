@@ -26,11 +26,15 @@ def generate_launch_description():
         }]
     )
 
-    # joint_state_publisher_gui for testing
-    joint_state_publisher = Node(
-        package="joint_state_publisher_gui",
-        executable="joint_state_publisher_gui",
-        name="joint_state_publisher_gui"
+    # joint_commander for controlling joints
+    joint_commander = Node(
+        package="kilin_controller",
+        executable="joint_commander",
+        name="joint_commander",
+        output="screen",
+        parameters=[{
+            "joint_names": ["joint1", "joint2", "joint3"]  # Update with your actual joint names
+        }]
     )
 
     # RViz
@@ -43,6 +47,6 @@ def generate_launch_description():
 
     return LaunchDescription([
         robot_state_publisher,
-        joint_state_publisher,
+        joint_commander,
         rviz
     ])
