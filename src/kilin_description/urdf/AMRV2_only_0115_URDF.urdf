@@ -3,7 +3,8 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="AMRV2_only_0115_URDF">
+  name="kilin_robot_0115">
+
   <link
     name="base_link">
     <inertial>
@@ -11,13 +12,13 @@
         xyz="-0.018256 0.0018454 0.011795"
         rpy="0 0 0" />
       <mass
-        value="18.4057659 " />
+        value="18.4057659" />
       <inertia
-        ixx="0.2903534"
-        ixy="0.0011118"
-        ixz="0.0062007"
-        iyy="0.6199319"
-        iyz="-0.0000185"
+        ixx="0.2903534" 
+        ixy="0.0011118" 
+        ixz="0.0062007" 
+        iyy="0.6199319" 
+        iyz="-0.0000185" 
         izz="0.8012885" />
     </inertial>
     <visual>
@@ -25,13 +26,12 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/base_link.STL" />
+        <box size="0.3 0.2 0.1"/>
       </geometry>
       <material
         name="">
         <color
-          rgba="0.89804 0.91765 0.92941 1" />
+          rgba="0.64706 0.61961 0.58824 1" />
       </material>
     </visual>
     <collision>
@@ -39,11 +39,11 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/base_link.STL" />
+        <box size="0.3 0.2 0.1"/>
       </geometry>
     </collision>
   </link>
+
   <link
     name="FL_hip_link">
     <inertial>
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_hip_link.STL" />
+          filename="package://kilin_description/meshes/FL_hip_link.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_hip_link.STL" />
+          filename="package://kilin_description/meshes/FL_hip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_steering_link.STL" />
+          filename="package://kilin_description/meshes/FL_steering_link.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_steering_link.STL" />
+          filename="package://kilin_description/meshes/FL_steering_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -182,7 +182,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_suspension_link.STL" />
+          filename="package://kilin_description/meshes/FL_suspension_link.STL" />
       </geometry>
       <material
         name="">
@@ -196,7 +196,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_suspension_link.STL" />
+          filename="package://kilin_description/meshes/FL_suspension_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -240,7 +240,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_wheel_link.STL" />
+          filename="package://kilin_description/meshes/FL_wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -254,7 +254,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FL_wheel_link.STL" />
+          filename="package://kilin_description/meshes/FL_wheel_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -298,7 +298,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR_hip_link.STL" />
+          filename="package://kilin_description/meshes/FR_hip_link.STL" />
       </geometry>
       <material
         name="">
@@ -312,7 +312,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR_hip_link.STL" />
+          filename="package://kilin_description/meshes/FR_hip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -356,7 +356,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR__steering_link.STL" />
+          filename="package://kilin_description/meshes/FR__steering_link.STL" />
       </geometry>
       <material
         name="">
@@ -370,7 +370,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR__steering_link.STL" />
+          filename="package://kilin_description/meshes/FR__steering_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -414,7 +414,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR_suspension_link.STL" />
+          filename="package://kilin_description/meshes/FR_suspension_link.STL" />
       </geometry>
       <material
         name="">
@@ -428,7 +428,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR_suspension_link.STL" />
+          filename="package://kilin_description/meshes/FR_suspension_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -472,7 +472,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR_wheel_link.STL" />
+          filename="package://kilin_description/meshes/FR_wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -486,7 +486,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/FR_wheel_link.STL" />
+          filename="package://kilin_description/meshes/FR_wheel_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -530,7 +530,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_hip_link.STL" />
+          filename="package://kilin_description/meshes/RL_hip_link.STL" />
       </geometry>
       <material
         name="">
@@ -544,7 +544,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_hip_link.STL" />
+          filename="package://kilin_description/meshes/RL_hip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -588,7 +588,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_steering_link.STL" />
+          filename="package://kilin_description/meshes/RL_steering_link.STL" />
       </geometry>
       <material
         name="">
@@ -602,7 +602,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_steering_link.STL" />
+          filename="package://kilin_description/meshes/RL_steering_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -646,7 +646,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_suspension_link.STL" />
+          filename="package://kilin_description/meshes/RL_suspension_link.STL" />
       </geometry>
       <material
         name="">
@@ -660,7 +660,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_suspension_link.STL" />
+          filename="package://kilin_description/meshes/RL_suspension_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -704,7 +704,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_wheel_link.STL" />
+          filename="package://kilin_description/meshes/RL_wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -718,7 +718,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RL_wheel_link.STL" />
+          filename="package://kilin_description/meshes/RL_wheel_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -762,7 +762,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_hip_link.STL" />
+          filename="package://kilin_description/meshes/RR_hip_link.STL" />
       </geometry>
       <material
         name="">
@@ -776,7 +776,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_hip_link.STL" />
+          filename="package://kilin_description/meshes/RR_hip_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -820,7 +820,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_steering_link.STL" />
+          filename="package://kilin_description/meshes/RR_steering_link.STL" />
       </geometry>
       <material
         name="">
@@ -834,7 +834,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_steering_link.STL" />
+          filename="package://kilin_description/meshes/RR_steering_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -878,7 +878,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_suspension_link.STL" />
+          filename="package://kilin_description/meshes/RR_suspension_link.STL" />
       </geometry>
       <material
         name="">
@@ -892,7 +892,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_suspension_link.STL" />
+          filename="package://kilin_description/meshes/RR_suspension_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -936,7 +936,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_wheel_link.STL" />
+          filename="package://kilin_description/meshes/RR_wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -950,7 +950,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://AMRV2_only_0115_URDF/meshes/RR_wheel_link.STL" />
+          filename="package://kilin_description/meshes/RR_wheel_link.STL" />
       </geometry>
     </collision>
   </link>

@@ -14,15 +14,16 @@ class JointCommander(Node):
 
         # All joints in the robot
         self.declare_parameter('joint_names', [
-            'FL_Joint0', 'FL_Joint1', 'FL_Joint2', 'FL_Joint3',
-            'FR_Joint0', 'FR_Joint1', 'FR_Joint2', 'FR_Joint3',
-            'RL_Joint0', 'RL_Joint1', 'RL_Joint2', 'RL_Joint3',
-            'RR_Joint0', 'RR_Joint1', 'RR_Joint2', 'RR_Joint3',
+        "FL_hip", "FL_steering", "FL_suspension", "FL_wheel",
+        "FR_hip", "FR_steering", "FR_suspension", "FR_wheel",
+        "RL_hip", "RL_steering", "RL_suspension", "RL_wheel",
+        "RR_hip", "RR_steering", "RR_suspension", "RR_wheel",
         ])
+    
         self.joint_names = self.get_parameter('joint_names').value
         
         # Only move these joints
-        self.active_joints = ['FL_Joint0', 'FR_Joint0', 'RL_Joint0', 'RR_Joint0']
+        self.active_joints = ['FL_hip', 'FR_hip', 'RL_hip', 'RR_hip']
         self.get_logger().info(f'Joint Commander initialized for joints: {self.active_joints}')
 
     def timer_callback(self):
