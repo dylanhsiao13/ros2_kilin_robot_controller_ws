@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'joint_commander=kilin_controller.joint_commander:main',
             'whole_body_controller=kilin_controller.whole_body_controller:main',
+            'joint_state_plotter=kilin_controller.joint_state_plotter:main',
         ],
     },
 )

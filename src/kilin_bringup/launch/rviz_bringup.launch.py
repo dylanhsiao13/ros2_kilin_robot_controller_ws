@@ -59,9 +59,17 @@ def generate_launch_description():
         output="screen"
     )
 
+    joint_state_plotter = Node(
+        package="kilin_controller",
+        executable="joint_state_plotter",
+        name="joint_state_plotter",
+        output="screen"
+    )
+
     return LaunchDescription([
         robot_state_publisher,
         joint_commander,
         whole_body_controller,
+        joint_state_plotter,
         rviz
     ])
