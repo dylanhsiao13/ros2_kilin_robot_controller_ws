@@ -24,9 +24,17 @@ def generate_launch_description():
         }]
     )
 
+    # whole_body_controller (upper-level gait controller)
+    whole_body_controller = Node(
+        package="kilin_controller",
+        executable="whole_body_controller",
+        name="whole_body_controller",
+        output="screen"
+    )
 
 
     return LaunchDescription([
         
         joint_commander,
+        whole_body_controller,
     ])
