@@ -66,10 +66,18 @@ def generate_launch_description():
         output="screen"
     )
 
+    dummy_simulator = Node(
+        package="kilin_controller",
+        executable="dummy_simulator",
+        name="dummy_simulator",
+        output="screen"
+    )
+
     return LaunchDescription([
         robot_state_publisher,
         joint_commander,
         whole_body_controller,
         joint_state_plotter,
+        dummy_simulator,
         rviz
     ])
