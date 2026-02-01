@@ -12,7 +12,6 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', ['launch/rviz_bringup.launch.py']),
         ('share/' + package_name + '/launch', ['launch/IsaacSim_bringup.launch.py']),
-        ('share/' + package_name + '/launch', ['launch/joint_state_plotter.py']),
     
     ],
     install_requires=['setuptools'],

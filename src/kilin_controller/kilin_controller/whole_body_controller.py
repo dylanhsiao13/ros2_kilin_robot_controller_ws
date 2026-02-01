@@ -18,18 +18,30 @@ class WholeBodyController(Node):
         self.timer = self.create_timer(0.02, self.timer_callback)  # 50 Hz
         self.time_start = time.time()
 
-        # Amble order: RL → FL → RR → FR
+        # Amble order
         self.hip_joints = ['RL_hip', 'FL_hip', 'RR_hip', 'FR_hip']
 
-        # Track cumulative positions for each joint (continuously increasing)
-        self.cumulative_positions = [0.0] * len(self.hip_joints)
+        # Store last commanded position (IMPORTANT)
+        self.last_cmd_positions = [0.0] * len(self.hip_joints)
 
-        # Parameters
         self.declare_parameter('gait_frequency', 0.25)  # Hz
 
         self.get_logger().info(
-            'WholeBodyController started: cyclic amble (continuously increasing hip motion)'
+            'WholeBodyController started (position control with wrap continuity)'
         )
+
+    def wrap_to_pi(self, angle):
+        return ((angle + math.pi) % (2.0 * math.pi)) - math.pi
+
+    def make_continuous(self, prev, curr):
+        """
+        Adjust curr by ±2π so it is closest to prev
+        """
+        while curr - prev > math.pi:
+            curr -= 2.0 * math.pi
+        while curr - prev < -math.pi:
+            curr += 2.0 * math.pi
+        return curr
 
     def timer_callback(self):
         msg = JointState()
@@ -39,8 +51,7 @@ class WholeBodyController(Node):
         t = time.time() - self.time_start
 
         freq = self.get_parameter('gait_frequency').value
-        if freq <= 0.0:
-            freq = 1.0
+        freq = max(freq, 1e-3)
 
         period = 1.0 / freq
         omega = 2.0 * math.pi / period
@@ -50,30 +61,39 @@ class WholeBodyController(Node):
         n_cycles = int(t // T_cycle)
 
         positions = []
-        for i, joint in enumerate(self.hip_joints):
+
+        for i in range(len(self.hip_joints)):
             start = i * period
             end = (i + 1) * period
 
-            # Base position for completed cycles
-            base_position = n_cycles * 2.0 * math.pi
+            base = n_cycles * 2.0 * math.pi
 
             if t_mod < start:
-                pos = base_position
+                pos = base
             elif start <= t_mod < end:
-                pos = base_position + omega * (t_mod - start)
+                pos = base + omega * (t_mod - start)
             else:
-                pos = base_position + 2.0 * math.pi
+                pos = base + 2.0 * math.pi
 
-            # Wrap to [-pi, pi] to satisfy PhysX revolute joint limits
-            pos_wrapped = ((pos + math.pi) % (2.0 * math.pi)) - math.pi
-            positions.append(pos_wrapped)
+            # 1) PhysX-safe wrap
+            pos_wrapped = self.wrap_to_pi(pos)
+
+            # 2) Time-continuous correction (KEY)
+            pos_cont = self.make_continuous(
+                self.last_cmd_positions[i],
+                pos_wrapped
+            )
+
+            positions.append(pos_cont)
+            self.last_cmd_positions[i] = pos_cont
 
         msg.position = positions
-        msg.velocity = [0.0] * len(self.hip_joints)
-        msg.effort = [0.0] * len(self.hip_joints)
+        msg.velocity = [0.0] * len(positions)
+        msg.effort = [0.0] * len(positions)
 
         self.publisher.publish(msg)
-        
+
+
 def main(args=None):
     rclpy.init(args=args)
     node = WholeBodyController()
