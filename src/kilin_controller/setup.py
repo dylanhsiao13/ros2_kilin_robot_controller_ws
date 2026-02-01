@@ -28,6 +28,7 @@ setup(
             'whole_body_controller=kilin_controller.whole_body_controller:main',
             'joint_state_plotter=kilin_controller.joint_state_plotter:main',
             'dummy_simulator=kilin_controller.dummy_simulator:main',
+            'state_estimator=kilin_controller.state_estimator:main',
         ],
     },
 )
