@@ -11,7 +11,7 @@ class JointCommander(Node):
 
         self.publisher = self.create_publisher(
             JointState,
-            '/joint_states',
+            '/joint_command',
             10
         )
 

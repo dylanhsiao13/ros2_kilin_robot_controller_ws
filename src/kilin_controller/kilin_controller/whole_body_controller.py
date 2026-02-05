@@ -78,7 +78,7 @@ class WholeBodyController(Node):
             # 1) PhysX-safe wrap
             pos_wrapped = self.wrap_to_pi(pos)
 
-            # 2) Time-continuous correction (KEY)
+            # 2) Time-continuous correction to avoid jumps
             pos_cont = self.make_continuous(
                 self.last_cmd_positions[i],
                 pos_wrapped
