@@ -44,9 +44,17 @@ def generate_launch_description():
         name="state_estimator",                         
         output="screen"
     )
+    state_estimation_visualizer = Node(
+        package="kilin_controller",
+        executable="state_estimation_visualizer",
+        name="state_estimation_visualizer",
+        output="screen"
+    )
     return LaunchDescription([
         
         joint_commander,
         whole_body_controller,
         state_estimator,
+        state_estimation_visualizer
+
     ])
