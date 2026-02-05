@@ -48,6 +48,5 @@ def generate_launch_description():
         
         joint_commander,
         whole_body_controller,
-        joint_state_plotter,
         state_estimator,
     ])
