@@ -29,6 +29,13 @@ setup(
             'joint_state_plotter=kilin_controller.joint_state_plotter:main',
             'dummy_simulator=kilin_controller.dummy_simulator:main',
             'state_estimator=kilin_controller.state_estimator:main',
+            'state_estimation_visualizer=kilin_controller.state_estimation_visualizer:main',
+            'base_attitude_controller=kilin_controller.base_attitude_controller:main',
+            'base_attitude_gui=kilin_controller.base_attitude_gui:main',
+            'joint_trajectory_planner=kilin_controller.joint_trajectory_planner:main',
+            'custom_controller=kilin_controller.custom_controller:main',
+            'custom_controller_gui=kilin_controller.custom_controller_gui:main',
+            
         ],
     },
 )
