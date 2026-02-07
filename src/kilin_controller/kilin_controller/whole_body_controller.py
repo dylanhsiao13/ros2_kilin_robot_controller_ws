@@ -24,7 +24,7 @@ class WholeBodyController(Node):
         # Store last commanded position (IMPORTANT)
         self.last_cmd_positions = [0.0] * len(self.hip_joints)
 
-        self.declare_parameter('gait_frequency', 0.25)  # Hz
+        self.declare_parameter('gait_frequency', 0.2)  # Hz
 
         self.get_logger().info(
             'WholeBodyController started (position control with wrap continuity)'
