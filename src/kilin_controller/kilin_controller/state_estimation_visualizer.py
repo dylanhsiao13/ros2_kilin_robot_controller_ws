@@ -20,6 +20,18 @@ class StateVisualization(Node):
         self.yaw = 0.0
 
         # =========================
+        # Base state Error
+        # =========================
+        self.e_roll = 0.0
+        self.e_pitch = 0.0
+        
+        self.roll_from_controller = 0.0
+        self.pitch_from_controller = 0.0
+
+        self.desired_roll = 0.0
+        self.desired_pitch = 0.0    
+
+        # =========================
         # Contact state
         # =========================
         self.contact = {'FL': False, 'FR': False, 'RL': False, 'RR': False}
@@ -49,7 +61,7 @@ class StateVisualization(Node):
         self.create_subscription(Float64MultiArray, '/dz_cmd', self.dz_cb, 10)
         self.create_subscription(JointState, '/joint_states', self.joint_cb, 10)
         self.create_subscription(JointState, '/joint_command_ref', self.joint_command_cb, 10)
-
+        self.create_subscription(Float64MultiArray,'/base_attitude_error',self.error_cb,10)
         self.get_logger().info("StateVisualization started")
 
         # =========================
@@ -92,7 +104,16 @@ class StateVisualization(Node):
         for name, pos in zip(msg.name, msg.position):
             if name in self.hip_joints:
                 self.joint_cmds[name] = pos
+    def error_cb(self, msg: Float64MultiArray):
+        if len(msg.data) < 2:
+            return
+        self.desired_roll = msg.data[0]
+        self.roll_from_controller = msg.data[1]
+        self.e_roll = msg.data[2]
 
+        self.desired_pitch = msg.data[3]
+        self.pitch_from_controller = msg.data[4]
+        self.e_pitch = msg.data[5]
     # ------------------------------------------------------------------
     # Visualization
     # ------------------------------------------------------------------
@@ -101,7 +122,7 @@ class StateVisualization(Node):
         self.ax3d.set_xlim(-0.5, 0.5)
         self.ax3d.set_ylim(-0.5, 0.5)
         self.ax3d.set_zlim(-0.4, 0.4)
-        self.ax3d.set_title(f"Anti-Fall Visualization\nroll={self.roll:.2f}, pitch={self.pitch:.2f}")
+        self.ax3d.set_title(f"Anti-Fall Visualization\nroll={self.roll:.2f}, pitch={self.pitch:.2f}\n" f"error_roll={self.e_roll:.2f}, error_pitch={self.e_pitch:.2f}\n" f"desired_roll={self.desired_roll:.2f}, desired_pitch={self.desired_pitch:.2f}\n" f"controller_roll={self.roll_from_controller:.2f}, controller_pitch={self.pitch_from_controller:.2f}")
 
         R = self.rpy_to_rot(self.roll, self.pitch, self.yaw)
 

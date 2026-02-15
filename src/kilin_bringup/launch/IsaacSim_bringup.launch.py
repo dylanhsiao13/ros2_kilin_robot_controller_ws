@@ -88,9 +88,9 @@ def generate_launch_description():
         state_estimation_visualizer,
         base_attitude_controller,
         base_attitude_gui,
-        #joint_trajectory_planner,
-        custom_controller,
-        custom_controller_gui,
+        joint_trajectory_planner,
+        #custom_controller,
+        #custom_controller_gui,
       
         
 

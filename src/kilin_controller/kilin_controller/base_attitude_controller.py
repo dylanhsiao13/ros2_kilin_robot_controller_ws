@@ -43,7 +43,7 @@ class BaseAttitudeController(Node):
         self.create_subscription(
             Float64MultiArray,
             '/base_rpy',
-            self.base_cb,
+            self.rpy_cb,
             10
         )
 
@@ -63,6 +63,11 @@ class BaseAttitudeController(Node):
             10
         )
 
+        self.error_pub = self.create_publisher(
+            Float64MultiArray,
+            '/base_attitude_error',
+            10
+        )
         # ==================================================
         # Control loop
         # ==================================================
@@ -89,15 +94,13 @@ class BaseAttitudeController(Node):
         self.kp_pitch = msg.data[3]
         self.enable = msg.data[4] > 0.5
 
-    def base_cb(self, msg: Float64MultiArray):
+    def rpy_cb(self, msg: Float64MultiArray):
         """
         data = [roll,pitch,yaw]
         """
-        if len(msg.data) < 2:
-            return
-
-        self.pitch = msg.data[1]
         self.roll = msg.data[0]
+        self.pitch = msg.data[1]
+        
 
     def contact_cb(self, msg: Float64MultiArray):
         if len(msg.data) < 4:
@@ -117,6 +120,10 @@ class BaseAttitudeController(Node):
         # -------- attitude error --------
         e_roll =  self.desired_roll - self.roll
         e_pitch =  self.desired_pitch - self.pitch
+
+        msg = Float64MultiArray()
+        msg.data = [self.desired_roll , self.roll, e_roll, self.desired_pitch , self.pitch, e_pitch]
+        self.error_pub.publish(msg)
 
         # -------- dz command --------
         dz = {'FL': 0.0, 'FR': 0.0, 'RL': 0.0, 'RR': 0.0}
