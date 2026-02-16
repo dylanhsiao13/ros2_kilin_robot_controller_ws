@@ -15,6 +15,9 @@ class BaseAttitudeController(Node):
         self.desired_pitch = 0.0
         self.kp_roll = 0.05
         self.kp_pitch = 0.05
+        self.kd_roll = 0.0
+        self.kd_pitch = 0.0
+        self.alpha_dz = 0.15
         self.enable = True
 
         # ==================================================
@@ -22,12 +25,19 @@ class BaseAttitudeController(Node):
         # ==================================================
         self.roll = 0.0
         self.pitch = 0.0
-
+        self.prev_e_roll = 0.0
+        self.prev_e_pitch = 0.0
         self.contact = {
             'FL': True,
             'FR': True,
             'RL': True,
             'RR': True
+        }
+        self.dz_filtered = {
+            "FL": 0.0,
+            "FR": 0.0,
+            "RL": 0.0,
+            "RR": 0.0
         }
 
         # ==================================================
@@ -82,17 +92,22 @@ class BaseAttitudeController(Node):
           desired_pitch,
           kp_roll,
           kp_pitch,
+          kd_roll,
+          kd_pitch,
           enable (0/1)
         ]
         """
-        if len(msg.data) < 5:
+        if len(msg.data) < 7:
+            self.get_logger().warn("Received incomplete base_attitude_cmd message")
             return
 
         self.desired_roll = msg.data[0]
         self.desired_pitch = msg.data[1]
         self.kp_roll = msg.data[2]
         self.kp_pitch = msg.data[3]
-        self.enable = msg.data[4] > 0.5
+        self.kd_roll = msg.data[4]
+        self.kd_pitch = msg.data[5]
+        self.enable = msg.data[6] > 0.5
 
     def rpy_cb(self, msg: Float64MultiArray):
         """
@@ -120,35 +135,45 @@ class BaseAttitudeController(Node):
         # -------- attitude error --------
         e_roll =  self.desired_roll - self.roll
         e_pitch =  self.desired_pitch - self.pitch
+        dt=1/20.0
+        de_roll = (e_roll - self.prev_e_roll) / dt
+        de_pitch = (e_pitch - self.prev_e_pitch) / dt
+        self.prev_e_roll = e_roll
+        self.prev_e_pitch = e_pitch
 
         msg = Float64MultiArray()
         msg.data = [self.desired_roll , self.roll, e_roll, self.desired_pitch , self.pitch, e_pitch]
         self.error_pub.publish(msg)
 
         # -------- dz command --------
-        dz = {'FL': 0.0, 'FR': 0.0, 'RL': 0.0, 'RR': 0.0}
+        raw_dz = {'FL': 0.0, 'FR': 0.0, 'RL': 0.0, 'RR': 0.0}
 
         # Pitch correction
-        dz['FL'] += -self.kp_pitch * e_pitch
-        dz['FR'] += -self.kp_pitch * e_pitch
-        dz['RL'] += self.kp_pitch * e_pitch
-        dz['RR'] += self.kp_pitch * e_pitch        
+        raw_dz['FL'] += -self.kp_pitch * e_pitch-self.kd_pitch * de_pitch
+        raw_dz['FR'] += -self.kp_pitch * e_pitch-self.kd_pitch * de_pitch
+        raw_dz['RL'] += self.kp_pitch * e_pitch+self.kd_pitch * de_pitch
+        raw_dz['RR'] += self.kp_pitch * e_pitch+self.kd_pitch * de_pitch
 
         # Roll correction
-        dz['FL'] += self.kp_roll * e_roll
-        dz['FR'] += -self.kp_roll * e_roll
-        dz['RL'] +=  self.kp_roll * e_roll
-        dz['RR'] +=  -self.kp_roll * e_roll
+        raw_dz['FL'] += self.kp_roll * e_roll+self.kd_roll * de_roll
+        raw_dz['FR'] += -self.kp_roll * e_roll-self.kd_roll * de_roll
+        raw_dz['RL'] +=  self.kp_roll * e_roll+self.kd_roll * de_roll
+        raw_dz['RR'] +=  -self.kp_roll * e_roll-self.kd_roll * de_roll
 
-
+        # Low-pass filter
+        for leg in raw_dz:
+            self.dz_filtered[leg] = (
+                self.alpha_dz * raw_dz[leg] +
+                (1 - self.alpha_dz) * self.dz_filtered[leg]
+            )
 
         # Apply only to contact legs
         dz_cmd = Float64MultiArray()
         dz_cmd.data = [
-            dz['FL'] if self.contact['FL'] else 0.0,
-            dz['FR'] if self.contact['FR'] else 0.0,
-            dz['RL'] if self.contact['RL'] else 0.0,
-            dz['RR'] if self.contact['RR'] else 0.0,
+            self.dz_filtered['FL'] if self.contact['FL'] else 0.0,
+            self.dz_filtered['FR'] if self.contact['FR'] else 0.0,
+            self.dz_filtered['RL'] if self.contact['RL'] else 0.0,
+            self.dz_filtered['RR'] if self.contact['RR'] else 0.0,
         ]
 
         self.dz_pub.publish(dz_cmd)

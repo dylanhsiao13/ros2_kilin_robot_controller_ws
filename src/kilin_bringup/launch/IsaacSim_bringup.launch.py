@@ -89,6 +89,7 @@ def generate_launch_description():
         base_attitude_controller,
         base_attitude_gui,
         joint_trajectory_planner,
+        joint_state_plotter,
         #custom_controller,
         #custom_controller_gui,
       
