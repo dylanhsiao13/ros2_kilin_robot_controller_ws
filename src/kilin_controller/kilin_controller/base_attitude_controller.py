@@ -13,8 +13,8 @@ class BaseAttitudeController(Node):
         # ==================================================
         self.desired_roll = 0.0
         self.desired_pitch = 0.0
-        self.kp_roll = 0.005
-        self.kp_pitch = 0.005
+        self.kp_roll = 0.00
+        self.kp_pitch = 0.00
         self.kd_roll = 0.0
         self.kd_pitch = 0.0
         self.ki_roll = 0.0
@@ -31,6 +31,8 @@ class BaseAttitudeController(Node):
         self.prev_e_pitch = 0.0
         self.int_roll = 0.0
         self.int_pitch = 0.0
+        self.int_limit = 0.5  # Integral windup limit
+        
         self.contact = {
             'FL': True,
             'FR': True,
@@ -150,8 +152,13 @@ class BaseAttitudeController(Node):
         self.prev_e_roll = e_roll
         self.prev_e_pitch = e_pitch
 
-        self.int_roll  += e_roll  * dt
-        self.int_pitch += e_pitch * dt
+        if all(self.contact.values()):
+            self.int_roll += e_roll * dt
+            self.int_pitch += e_pitch * dt
+
+            # Anti-windup clamp
+            self.int_roll = max(min(self.int_roll, self.int_limit), -self.int_limit)
+            self.int_pitch = max(min(self.int_pitch, self.int_limit), -self.int_limit)
 
         msg = Float64MultiArray()
         msg.data = [self.desired_roll , self.roll, e_roll, self.desired_pitch , self.pitch, e_pitch]

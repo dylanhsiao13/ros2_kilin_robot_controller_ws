@@ -34,7 +34,7 @@ class HipJointTrajectoryPlanner(Node):
         # Parameters
         # =========================
         self.leg_length = 0.35    # effective leg length (m)
-        self.kp_dz = 10          # dz -> hip gain
+        self.kp_dz = 20          # dz -> hip gain
 
         # safety (rad)
         self.hip_min = -math.pi
@@ -111,7 +111,7 @@ class HipJointTrajectoryPlanner(Node):
             q_curr = self.curr_hip[hip_joint]
             dz = self.dz_cmd[leg]
 
-            if dz > 0.0 and abs(q_curr) < 0.2:
+            if dz > 0.0 and abs(q_curr) < 0.05:
                 q_cmd = q_curr
 
             else:

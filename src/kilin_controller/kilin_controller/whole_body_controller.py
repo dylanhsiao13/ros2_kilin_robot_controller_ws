@@ -4,7 +4,7 @@ from sensor_msgs.msg import JointState
 import math
 import time
 
-
+#hip joints revolve continuously
 class WholeBodyController(Node):
     def __init__(self):
         super().__init__('whole_body_controller')
@@ -24,7 +24,7 @@ class WholeBodyController(Node):
         # Store last commanded position (IMPORTANT)
         self.last_cmd_positions = [0.0] * len(self.hip_joints)
 
-        self.declare_parameter('gait_frequency', 0.2)  # Hz
+        self.declare_parameter('gait_frequency', 0.1)  # Hz
 
         self.get_logger().info(
             'WholeBodyController started (position control with wrap continuity)'
