@@ -28,8 +28,13 @@ class BaseAttitudeGUI(Node):
 
         self.kp_roll = 0.05
         self.kp_pitch = 0.05
+
         self.kd_roll = 0.01
         self.kd_pitch = 0.01
+
+        self.ki_roll = 0.01
+        self.ki_pitch = 0.01
+
 
         self.enable = 1.0
 
@@ -46,43 +51,58 @@ class BaseAttitudeGUI(Node):
         self.kp_pitch_value_label = None
         self.kd_roll_value_label = None
         self.kd_pitch_value_label = None
+        self.ki_roll_value_label = None
+        self.ki_pitch_value_label = None
+        
 
         # Desired angles
         self._build_angle_slider(
             "Desired Roll",
-            -5, 5, 0,
+            -10, 10, 0,
             self._update_roll
         )
 
         self._build_angle_slider(
             "Desired Pitch",
-            -5, 5, 1,
+            -10, 10, 1,
             self._update_pitch
         )
 
         # Gains
         self._build_gain_slider(
             "KP Roll",
-            0.0, 0.2, 2,
+            0.0, 0.02, 2,
             self._update_kp_roll
         )
 
         self._build_gain_slider(
             "KP Pitch",
-            0.0, 0.2, 3,
+            0.0, 0.02, 3,
             self._update_kp_pitch
         )
 
         self._build_gain_slider(
             "KD Roll",
-            0.0, 0.2, 4,
+            0.0, 0.02, 4,
             self._update_kd_roll
         )
 
         self._build_gain_slider(
             "KD Pitch",
-            0.0, 0.2, 5,
+            0.0, 0.02, 5,
             self._update_kd_pitch
+        )
+
+        self._build_gain_slider(
+            "KI Roll",
+            0.0, 0.02, 6,
+            self._update_ki_roll
+        )
+
+        self._build_gain_slider(
+            "KI Pitch",
+            0.0, 0.02, 7,
+            self._update_ki_pitch
         )
 
         # Enable checkbox
@@ -92,7 +112,7 @@ class BaseAttitudeGUI(Node):
             text="Enable Controller",
             variable=self.enable_var,
             command=self._toggle_enable
-        ).grid(row=6, column=0, columnspan=3, pady=8)
+        ).grid(row=8, column=0, columnspan=3, pady=8)
 
         # Start loop
         self.root.after(50, self.loop)
@@ -151,6 +171,10 @@ class BaseAttitudeGUI(Node):
             self.kd_roll_value_label = value_label
         elif label == "KD Pitch":
             self.kd_pitch_value_label = value_label
+        elif label == "KI Roll":
+            self.ki_roll_value_label = value_label
+        elif label == "KI Pitch":
+            self.ki_pitch_value_label = value_label
 
     # ==========================================================
     # Update Callbacks
@@ -183,6 +207,14 @@ class BaseAttitudeGUI(Node):
         self.kd_pitch = v
         self.kd_pitch_value_label.config(text=f"{v:.4f}")
 
+    def _update_ki_roll(self, v):
+        self.ki_roll = v
+        self.ki_roll_value_label.config(text=f"{v:.4f}")        
+    
+    def _update_ki_pitch(self, v):
+        self.ki_pitch = v
+        self.ki_pitch_value_label.config(text=f"{v:.4f}")
+
     def _toggle_enable(self):
         self.enable = 1.0 if self.enable_var.get() else 0.0
 
@@ -200,7 +232,9 @@ class BaseAttitudeGUI(Node):
             self.kp_pitch,       # 3
             self.kd_roll,        # 4
             self.kd_pitch,       # 5
-            self.enable          # 6
+            self.ki_roll,        # 6
+            self.ki_pitch,       # 7
+            self.enable          # 8
         ]
 
         self.pub.publish(msg)

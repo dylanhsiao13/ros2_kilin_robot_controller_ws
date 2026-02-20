@@ -13,10 +13,12 @@ class BaseAttitudeController(Node):
         # ==================================================
         self.desired_roll = 0.0
         self.desired_pitch = 0.0
-        self.kp_roll = 0.05
-        self.kp_pitch = 0.05
+        self.kp_roll = 0.005
+        self.kp_pitch = 0.005
         self.kd_roll = 0.0
         self.kd_pitch = 0.0
+        self.ki_roll = 0.0
+        self.ki_pitch = 0.0
         self.alpha_dz = 0.15
         self.enable = True
 
@@ -27,6 +29,8 @@ class BaseAttitudeController(Node):
         self.pitch = 0.0
         self.prev_e_roll = 0.0
         self.prev_e_pitch = 0.0
+        self.int_roll = 0.0
+        self.int_pitch = 0.0
         self.contact = {
             'FL': True,
             'FR': True,
@@ -81,7 +85,7 @@ class BaseAttitudeController(Node):
         # ==================================================
         # Control loop
         # ==================================================
-        self.timer = self.create_timer(0.02, self.control_loop)
+        self.timer = self.create_timer(0.1, self.control_loop) #10 Hz
         self.get_logger().info("BaseAttitudeController (topic-based) started")
 
     # --------------------------------------------------
@@ -94,10 +98,12 @@ class BaseAttitudeController(Node):
           kp_pitch,
           kd_roll,
           kd_pitch,
+          ki_roll,
+          ki_pitch,
           enable (0/1)
         ]
         """
-        if len(msg.data) < 7:
+        if len(msg.data) < 8:
             self.get_logger().warn("Received incomplete base_attitude_cmd message")
             return
 
@@ -107,7 +113,9 @@ class BaseAttitudeController(Node):
         self.kp_pitch = msg.data[3]
         self.kd_roll = msg.data[4]
         self.kd_pitch = msg.data[5]
-        self.enable = msg.data[6] > 0.5
+        self.ki_roll = msg.data[6]
+        self.ki_pitch = msg.data[7]
+        self.enable = msg.data[8] > 0.5
 
     def rpy_cb(self, msg: Float64MultiArray):
         """
@@ -132,14 +140,18 @@ class BaseAttitudeController(Node):
         if not self.enable:
             return
 
-        # -------- attitude error --------
+        # -------- attitude error(PID) --------
         e_roll =  self.desired_roll - self.roll
         e_pitch =  self.desired_pitch - self.pitch
-        dt=1/20.0
+
+        dt=1/10.0
         de_roll = (e_roll - self.prev_e_roll) / dt
         de_pitch = (e_pitch - self.prev_e_pitch) / dt
         self.prev_e_roll = e_roll
         self.prev_e_pitch = e_pitch
+
+        self.int_roll  += e_roll  * dt
+        self.int_pitch += e_pitch * dt
 
         msg = Float64MultiArray()
         msg.data = [self.desired_roll , self.roll, e_roll, self.desired_pitch , self.pitch, e_pitch]
@@ -149,16 +161,16 @@ class BaseAttitudeController(Node):
         raw_dz = {'FL': 0.0, 'FR': 0.0, 'RL': 0.0, 'RR': 0.0}
 
         # Pitch correction
-        raw_dz['FL'] += -self.kp_pitch * e_pitch-self.kd_pitch * de_pitch
-        raw_dz['FR'] += -self.kp_pitch * e_pitch-self.kd_pitch * de_pitch
-        raw_dz['RL'] += self.kp_pitch * e_pitch+self.kd_pitch * de_pitch
-        raw_dz['RR'] += self.kp_pitch * e_pitch+self.kd_pitch * de_pitch
+        raw_dz['FL'] += -self.kp_pitch * e_pitch-self.kd_pitch * de_pitch-self.ki_pitch * self.int_pitch
+        raw_dz['FR'] += -self.kp_pitch * e_pitch-self.kd_pitch * de_pitch-self.ki_pitch * self.int_pitch
+        raw_dz['RL'] += self.kp_pitch * e_pitch+self.kd_pitch * de_pitch+self.ki_pitch * self.int_pitch
+        raw_dz['RR'] += self.kp_pitch * e_pitch+self.kd_pitch * de_pitch+self.ki_pitch * self.int_pitch
 
         # Roll correction
-        raw_dz['FL'] += self.kp_roll * e_roll+self.kd_roll * de_roll
-        raw_dz['FR'] += -self.kp_roll * e_roll-self.kd_roll * de_roll
-        raw_dz['RL'] +=  self.kp_roll * e_roll+self.kd_roll * de_roll
-        raw_dz['RR'] +=  -self.kp_roll * e_roll-self.kd_roll * de_roll
+        raw_dz['FL'] += self.kp_roll * e_roll+self.kd_roll * de_roll+self.ki_roll * self.int_roll
+        raw_dz['FR'] += -self.kp_roll * e_roll-self.kd_roll * de_roll-self.ki_roll * self.int_roll
+        raw_dz['RL'] +=  self.kp_roll * e_roll+self.kd_roll * de_roll+self.ki_roll * self.int_roll
+        raw_dz['RR'] +=  -self.kp_roll * e_roll-self.kd_roll * de_roll-self.ki_roll * self.int_roll
 
         # Low-pass filter
         for leg in raw_dz:

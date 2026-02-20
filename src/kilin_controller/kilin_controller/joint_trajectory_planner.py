@@ -72,7 +72,7 @@ class HipJointTrajectoryPlanner(Node):
         )
 
         # control loop
-        self.timer = self.create_timer(0.02, self.update_cmd)  # 50 Hz
+        self.timer = self.create_timer(0.1, self.update_cmd)  # 10 Hz
 
         self.get_logger().info('Hip Joint Trajectory Planner started')
 
