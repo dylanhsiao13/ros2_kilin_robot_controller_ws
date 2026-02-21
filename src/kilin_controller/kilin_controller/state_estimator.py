@@ -21,8 +21,8 @@ class StateEstimator(Node):
 
         self.susp_on = 0.002
         self.susp_off = 0.001
-        self.eff_on = 25.0
-        self.eff_off = 15.0
+        self.eff_on = 12.0
+        self.eff_off = 10.0
 
         # Subscribers
         self.create_subscription(Imu, '/imu', self.imu_cb, 10)

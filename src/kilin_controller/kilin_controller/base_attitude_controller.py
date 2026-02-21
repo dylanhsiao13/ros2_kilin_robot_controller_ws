@@ -13,10 +13,10 @@ class BaseAttitudeController(Node):
         # ==================================================
         self.desired_roll = 0.0
         self.desired_pitch = 0.0
-        self.kp_roll = 0.00
-        self.kp_pitch = 0.00
-        self.kd_roll = 0.0
-        self.kd_pitch = 0.0
+        self.kp_roll = 0.04
+        self.kp_pitch = 0.04
+        self.kd_roll = 0.02
+        self.kd_pitch = 0.02
         self.ki_roll = 0.0
         self.ki_pitch = 0.0
         self.alpha_dz = 0.15

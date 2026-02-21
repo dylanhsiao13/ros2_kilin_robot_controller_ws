@@ -71,25 +71,25 @@ class BaseAttitudeGUI(Node):
         # Gains
         self._build_gain_slider(
             "KP Roll",
-            0.0, 0.1, 2,
+            0.04, 0.1, 2,
             self._update_kp_roll
         )
 
         self._build_gain_slider(
             "KP Pitch",
-            0.0, 0.1, 3,
+            0.04, 0.1, 3,
             self._update_kp_pitch
         )
 
         self._build_gain_slider(
             "KD Roll",
-            0.0, 0.02, 4,
+            0.02, 0.02, 4,
             self._update_kd_roll
         )
 
         self._build_gain_slider(
             "KD Pitch",
-            0.0, 0.02, 5,
+            0.02, 0.02, 5,
             self._update_kd_pitch
         )
 
