@@ -1,3 +1,4 @@
+import math
 import rclpy
 from rclpy.node import Node
 
@@ -33,12 +34,11 @@ class HipJointTrajectoryPlanner(Node):
         # Parameters
         # =========================
         self.leg_length = 0.35    # effective leg length (m)
-        self.kp_dz = 1.0          # dz -> hip gain
+        self.kp_dz = 20          # dz -> hip gain
 
         # safety (rad)
-        self.hip_min = -0.8
-        self.hip_max =  0.8
-
+        self.hip_min = -math.pi
+        self.hip_max =  math.pi
         # =========================
         # State
         # =========================
@@ -72,7 +72,7 @@ class HipJointTrajectoryPlanner(Node):
         )
 
         # control loop
-        self.timer = self.create_timer(0.02, self.update_cmd)  # 50 Hz
+        self.timer = self.create_timer(0.1, self.update_cmd)  # 10 Hz
 
         self.get_logger().info('Hip Joint Trajectory Planner started')
 
@@ -101,15 +101,27 @@ class HipJointTrajectoryPlanner(Node):
         cmd = JointState()
         cmd.header.stamp = self.get_clock().now().to_msg()
 
+        self.hip_sign = {
+                'FL':  1.0,
+                'FR': 1.0,
+                'RL': -1.0,
+                'RR': -1.0
+            }
         for leg, hip_joint in self.leg_map.items():
             q_curr = self.curr_hip[hip_joint]
             dz = self.dz_cmd[leg]
 
-            # dz (base corner) -> hip angle
-            dtheta = self.kp_dz * dz / self.leg_length
-            q_cmd = q_curr + dtheta
+            if dz > 0.0 and abs(q_curr) < 0.05:
+                q_cmd = q_curr
 
-            # safety clamp
+            else:
+                dtheta = self.kp_dz * dz
+
+                sign = self.hip_sign[leg]
+
+                q_cmd = q_curr + sign * dtheta
+                
+
             q_cmd = float(np.clip(q_cmd, self.hip_min, self.hip_max))
 
             cmd.name.append(hip_joint)

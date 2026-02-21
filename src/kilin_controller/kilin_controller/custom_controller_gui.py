@@ -30,8 +30,8 @@ class CustomJointGUI(Node):
         ttk.Checkbutton(self.root, text="Enable Controller",
                         variable=self.enable_var, command=self.publish_cmd).grid(row=4, column=0, columnspan=2)
 
-        # Timer to spin ROS
-        self.timer = self.create_timer(0.05, self._spin)
+        # Timer to spin ROS 10Hz
+        self.timer = self.create_timer(0.1, self._spin)
 
     def _spin(self):
         rclpy.spin_once(self, timeout_sec=0.0)
