@@ -62,6 +62,7 @@ class StateVisualization(Node):
         self.create_subscription(JointState, '/joint_states', self.joint_cb, 10)
         self.create_subscription(JointState, '/joint_command_ref', self.joint_command_cb, 10)
         self.create_subscription(Float64MultiArray,'/base_attitude_error',self.error_cb,10)
+        self.create_subscription(Float64MultiArray,'/com_projection',self.com_proj_cb,10)
         self.get_logger().info("StateVisualization started")
 
         # =========================
@@ -72,6 +73,12 @@ class StateVisualization(Node):
         self.ax3d = self.fig.add_subplot(111, projection='3d')
 
         self.timer = self.create_timer(0.05, self.update_visualization)  # 20 Hz
+
+        # =========================
+        # COM
+        # =========================
+        self.com = np.array([0.0,0.0,0.0])
+        self.com_proj = None
 
     # ------------------------------------------------------------------
     # Callbacks
@@ -104,8 +111,9 @@ class StateVisualization(Node):
         for name, pos in zip(msg.name, msg.position):
             if name in self.hip_joints:
                 self.joint_cmds[name] = pos
+
     def error_cb(self, msg: Float64MultiArray):
-        if len(msg.data) < 2:
+        if len(msg.data) < 6:
             return
         self.desired_roll = msg.data[0]
         self.roll_from_controller = msg.data[1]
@@ -114,6 +122,12 @@ class StateVisualization(Node):
         self.desired_pitch = msg.data[3]
         self.pitch_from_controller = msg.data[4]
         self.e_pitch = msg.data[5]
+
+    def com_proj_cb(self, msg: Float64MultiArray):
+        # 接收來自 state_estimator 計算的 COM
+        if len(msg.data) >= 3:
+            self.com = np.array([msg.data[0], msg.data[1], msg.data[2]])
+
     # ------------------------------------------------------------------
     # Visualization
     # ------------------------------------------------------------------
@@ -150,9 +164,9 @@ class StateVisualization(Node):
         }
 
         leg_len = 0.25
+        stance_points = []
 
         for leg, p_body in hip_pos.items():
-            # 使用 /joint_states 畫腿
             angle = -self.joint_angles[f"{leg}_hip"]
             p0 = R @ p_body
             p1 = p0 + R @ np.array([math.sin(angle), 0.0, -math.cos(angle)]) * leg_len
@@ -166,6 +180,7 @@ class StateVisualization(Node):
             # contact marker
             if self.contact[leg]:
                 self.ax3d.scatter(p1[0], p1[1], p1[2], color='k', s=35)
+                stance_points.append(p1)
 
             # dz arrow
             dz = self.dz[leg]
@@ -182,6 +197,35 @@ class StateVisualization(Node):
             self.ax3d.text(p0[0], p0[1], p0[2]+0.03,
                            f"{hip_cmd:.2f}",
                            color='magenta', fontsize=10, fontweight='bold')
+
+        # -------------------------
+        # COM + projection to stance plane
+        # -------------------------
+        if len(stance_points) >= 3:
+            p1, p2, p3 = stance_points[:3]
+            n = np.cross(p2 - p1, p3 - p1)
+            norm_n = np.linalg.norm(n)
+            if norm_n > 1e-6:
+                n = n / norm_n
+                # COM 投影到支撐平面
+                distance = np.dot(n, self.com - p1)
+                self.com_proj = self.com - distance * n
+
+                # 畫 COM
+                self.ax3d.scatter(self.com[0], self.com[1], self.com[2], s=80, color='green')
+
+                # 畫投影點
+                self.ax3d.scatter(self.com_proj[0], self.com_proj[1], self.com_proj[2], s=80, color='red')
+
+                # 畫垂直線
+                self.ax3d.plot([self.com[0], self.com_proj[0]],
+                               [self.com[1], self.com_proj[1]],
+                               [self.com[2], self.com_proj[2]],
+                               linestyle='--', color='orange')
+
+                # 畫支撐平面
+                poly = Poly3DCollection([stance_points], alpha=0.1, facecolor='cyan')
+                self.ax3d.add_collection3d(poly)
 
         self.ax3d.set_box_aspect([1, 1, 1])
         plt.draw()

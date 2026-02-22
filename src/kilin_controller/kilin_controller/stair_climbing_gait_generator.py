@@ -4,10 +4,11 @@ from sensor_msgs.msg import JointState
 import math
 import time
 
-#hip joints revolve continuously -> stair climbing gait 
-class WholeBodyController(Node):
+
+class stair_climbing_gait_generator(Node):
+
     def __init__(self):
-        super().__init__('whole_body_controller')
+        super().__init__('stair_climbing_gait_generator')
 
         self.publisher = self.create_publisher(
             JointState,
@@ -15,56 +16,67 @@ class WholeBodyController(Node):
             10
         )
 
-        self.timer = self.create_timer(0.02, self.timer_callback)  # 50 Hz
+        self.timer = self.create_timer(0.1, self.timer_callback)
+
         self.time_start = time.time()
 
-        # Amble order
+        # Hip order
         self.hip_joints = ['RL_hip', 'FL_hip', 'RR_hip', 'FR_hip']
 
-        # Store last commanded position (IMPORTANT)
-        self.last_cmd_positions = [0.0] * len(self.hip_joints)
+        self.last_cmd_positions = [0.0] * 4
 
-        self.declare_parameter('gait_frequency', 0.1)  # Hz
+        # ===== Parameters =====
+        self.declare_parameter('gait_frequency', 0.1)  # 0.1Hz
+        self.declare_parameter('leg_interval', 1)    # T (sec between legs)
 
         self.get_logger().info(
-            'WholeBodyController started (position control with wrap continuity)'
+            'Sequential Continuous Stair Climbing Gait Started'
         )
+
+    # -------------------------
+    # Utilities
+    # -------------------------
 
     def wrap_to_pi(self, angle):
         return ((angle + math.pi) % (2.0 * math.pi)) - math.pi
 
     def make_continuous(self, prev, curr):
-        """
-        Adjust curr by ±2π so it is closest to prev
-        """
         while curr - prev > math.pi:
             curr -= 2.0 * math.pi
         while curr - prev < -math.pi:
             curr += 2.0 * math.pi
         return curr
 
+    # -------------------------
+    # Main loop
+    # -------------------------
+
     def timer_callback(self):
+
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.name = self.hip_joints
 
         t = time.time() - self.time_start
 
-        freq = self.get_parameter('gait_frequency').value
-        freq = max(freq, 1e-3)
+        freq = max(self.get_parameter('gait_frequency').value, 1e-3)
+        T = self.get_parameter('leg_interval').value
 
-        period = 1.0 / freq
-        omega = 2.0 * math.pi / period
-        T_cycle = len(self.hip_joints) * period
+        P = 1.0 / freq           # one leg rotation duration
+        omega = 2.0 * math.pi / P
+
+        # New total cycle
+        T_cycle = 4 * P + 4 * T
 
         t_mod = t % T_cycle
         n_cycles = int(t // T_cycle)
 
         positions = []
 
-        for i in range(len(self.hip_joints)):
-            start = i * period
-            end = (i + 1) * period
+        for i in range(4):
+
+            start = i * (P + T)
+            end = start + P
 
             base = n_cycles * 2.0 * math.pi
 
@@ -75,10 +87,9 @@ class WholeBodyController(Node):
             else:
                 pos = base + 2.0 * math.pi
 
-            # 1) PhysX-safe wrap
+            # wrap + continuity
             pos_wrapped = self.wrap_to_pi(pos)
 
-            # 2) Time-continuous correction to avoid jumps
             pos_cont = self.make_continuous(
                 self.last_cmd_positions[i],
                 pos_wrapped
@@ -88,15 +99,15 @@ class WholeBodyController(Node):
             self.last_cmd_positions[i] = pos_cont
 
         msg.position = positions
-        msg.velocity = [0.0] * len(positions)
-        msg.effort = [0.0] * len(positions)
+        msg.velocity = [0.0] * 4
+        msg.effort = [0.0] * 4
 
         self.publisher.publish(msg)
 
 
 def main(args=None):
     rclpy.init(args=args)
-    node = WholeBodyController()
+    node = stair_climbing_gait_generator()
     rclpy.spin(node)
     rclpy.shutdown()
 

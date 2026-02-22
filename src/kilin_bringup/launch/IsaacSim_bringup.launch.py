@@ -79,16 +79,23 @@ def generate_launch_description():
         name="state_estimation_visualizer",
         output="screen"
     )
+    stair_climbing_gait_generator = Node(
+        package="kilin_controller",
+        executable="stair_climbing_gait_generator",
+        name="stair_climbing_gait_generator",
+        output="screen"
+    )
 
     return LaunchDescription([
         
         joint_commander,
         #whole_body_controller,
+        stair_climbing_gait_generator,
         state_estimator,
         state_estimation_visualizer,
-        base_attitude_controller,
-        base_attitude_gui,
-        joint_trajectory_planner,
+        #base_attitude_controller,
+        #base_attitude_gui,
+        #joint_trajectory_planner,
         joint_state_plotter,
         #custom_controller,
         #custom_controller_gui,

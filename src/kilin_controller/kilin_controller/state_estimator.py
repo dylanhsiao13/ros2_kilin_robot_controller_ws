@@ -21,8 +21,21 @@ class StateEstimator(Node):
 
         self.susp_on = 0.002
         self.susp_off = 0.001
-        self.eff_on = 12.0
-        self.eff_off = 10.0
+        self.eff_on = 30.0
+        self.eff_off = 25.0
+
+        # --- Mass info ---
+        self.base_mass = 18.4
+        self.leg_masses = {'FL':3.29, 'FR':3.29, 'RL':3.29, 'RR':3.29}  # 1.4+0.14+0.25+1.6
+        self.leg_positions = {
+            'FL': np.array([0.15, 0.10, 0.0]),
+            'FR': np.array([0.15, -0.10, 0.0]),
+            'RL': np.array([-0.15, 0.10, 0.0]),
+            'RR': np.array([-0.15, -0.10, 0.0])
+        }
+
+        # --- Center Of Mass ---
+        self.com = np.array([0.0,0.0,0.0])
 
         # Subscribers
         self.create_subscription(Imu, '/imu', self.imu_cb, 10)
@@ -31,6 +44,7 @@ class StateEstimator(Node):
         # Publishers
         self.contact_pub = self.create_publisher(Float64MultiArray, '/contact_state', 10)
         self.rpy_pub = self.create_publisher(Float64MultiArray, '/base_rpy', 10)
+        self.com_pub = self.create_publisher(Float64MultiArray, '/com_projection', 10)
 
         self.get_logger().info("StateEstimator started")
 
@@ -48,6 +62,7 @@ class StateEstimator(Node):
                 self.hip_efforts[name] = eff
         self.update_contact()
         self.publish_contact()
+        self.compute_com()
 
     def update_contact(self):
         for leg in ['FL','FR','RL','RR']:
@@ -68,6 +83,40 @@ class StateEstimator(Node):
         msg = Float64MultiArray()
         msg.data = list(self.base_rpy)
         self.rpy_pub.publish(msg)
+    
+    # ------------------------------------------------------------------
+    # COM calculation
+    # ------------------------------------------------------------------
+    def compute_com(self):
+        # Base COM in body frame
+        total_mass = self.base_mass + sum(self.leg_masses.values())
+        com = self.base_mass * np.array([0.0,0.0,0.0])
+        for leg, mass in self.leg_masses.items():
+            com += mass * self.leg_positions[leg]
+        com /= total_mass
+        self.com = com
+
+        # Project COM onto stance plane if ≥3 legs on ground
+        stance_legs = [leg for leg,state in self.contact_state.items() if state]
+        if len(stance_legs) >= 3:
+            p1 = self.leg_positions[stance_legs[0]]
+            p2 = self.leg_positions[stance_legs[1]]
+            p3 = self.leg_positions[stance_legs[2]]
+            n = np.cross(p2-p1, p3-p1)
+            norm_n = np.linalg.norm(n)
+            if norm_n > 1e-6:
+                n = n / norm_n
+                distance = np.dot(n, self.com - p1)
+                com_proj = self.com - distance*n
+                self.publish_com(com_proj)
+        else:
+            self.publish_com(self.com)
+
+    def publish_com(self, com):
+        msg = Float64MultiArray()
+        msg.data = com.tolist()
+        self.com_pub.publish(msg)
+
 
     @staticmethod
     def quat_to_rpy(q):

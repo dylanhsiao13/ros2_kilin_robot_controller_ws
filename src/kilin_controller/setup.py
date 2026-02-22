@@ -35,6 +35,7 @@ setup(
             'joint_trajectory_planner=kilin_controller.joint_trajectory_planner:main',
             'custom_controller=kilin_controller.custom_controller:main',
             'custom_controller_gui=kilin_controller.custom_controller_gui:main',
+            'stair_climbing_gait_generator=kilin_controller.stair_climbing_gait_generator:main',
             
         ],
     },
